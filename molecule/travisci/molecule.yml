@@ -1,0 +1,32 @@
+---
+dependency:
+  name: galaxy
+
+driver:
+  name: docker
+
+platforms:
+  - name: ubuntu1804
+    hostname: ubuntu1804
+    image: geerlingguy/docker-ubuntu1804-ansible
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+    pre_build_image: true
+
+lint:
+  name: yamllint
+
+provisioner:
+  name: ansible
+  playbooks:
+    prepare: ../resources/playbooks/playbook.yml
+    converge: ../resources/playbooks/playbook.yml
+  lint:
+    name: ansible-lint
+
+verifier:
+  name: testinfra
+  directory: ../resources/tests/
+  lint:
+    name: flake8

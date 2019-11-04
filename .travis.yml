@@ -1,0 +1,12 @@
+
+---
+language: python
+services:
+  - docker
+before_install:
+cache: pip
+  - sudo apt-get -qq update
+install:
+  - pip install molecule docker
+script:
+  - molecule test -s travisci
