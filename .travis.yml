@@ -2,10 +2,19 @@
 language: python
 services:
   - docker
+
+env:
+  global:
+    - ROLE_NAME=template_role
+
 before_install:
 cache: pip
   - sudo apt-get -qq update
 install:
   - pip install molecule docker
+
+before_script:
+  - mv . ../trombik.${ROLE_NAME}
+
 script:
   - molecule test -s travisci
