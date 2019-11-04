@@ -1,2 +1,7 @@
 ---
-# tasks file for bar
+
+- name: "Include vars/{{ ansible_os_family }}.yml"
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: "Include install-{{ ansible_os_family }}.yml"
+  include: "install-{{ ansible_os_family }}.yml"
