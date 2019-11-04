@@ -10,7 +10,7 @@ env:
 before_install:
 cache: pip
 install:
-  - apt-get -qq update
+  - sudo apt-get -qq update
   - pip install molecule docker
 
 before_script:
