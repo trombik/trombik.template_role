@@ -16,4 +16,6 @@ install:
 before_script:
 
 script:
+  - ansible --version
+  - molecule --version
   - molecule test -s travisci
