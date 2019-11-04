@@ -1,2 +1,11 @@
 ---
 
+- name: Install template_role_extra_packages
+  pkgng:
+    name: "{{ template_role_extra_packages }}"
+    state: present
+
+- name: Install template_role_package
+  pkgng:
+    name: "{{ template_role_package }}"
+    state: present

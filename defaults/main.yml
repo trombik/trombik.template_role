@@ -1,2 +1,4 @@
 ---
-# defaults file for bar
+
+template_role_package: "{{ __template_role_package }}"
+template_role_extra_packages: []

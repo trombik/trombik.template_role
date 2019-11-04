@@ -18,6 +18,13 @@ platforms:
 
 provisioner:
   name: ansible
+  become: true
+  options:
+    become: true
+  config_options:
+    defaults:
+      retry_files_enabled: false
+      stdout_callback: yaml
   playbooks:
     prepare: ../resources/playbooks/playbook.yml
     converge: ../resources/playbooks/playbook.yml

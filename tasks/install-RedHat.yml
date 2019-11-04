@@ -1,2 +1,11 @@
 ---
 
+- name: Install template_role_extra_packages
+  yum:
+    name: "{{ template_role_extra_packages }}"
+    state: present
+
+- name: Install template_role_package
+  yum:
+    name: "{{ template_role_package }}"
+    state: present
