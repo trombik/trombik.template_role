@@ -12,3 +12,7 @@ def test_hosts_file(host):
     assert f.exists
     assert f.user == 'root'
     assert f.group == 'root' or f.group == 'wheel'
+
+def test_package_is_installed(host):
+    package = host.package("tree")
+    assert package.is_installed
