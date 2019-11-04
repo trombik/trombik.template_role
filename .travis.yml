@@ -14,7 +14,6 @@ install:
   - pip install molecule docker
 
 before_script:
-  - ln -s . ../trombik.${ROLE_NAME}
 
 script:
   - molecule test -s travisci
