@@ -19,6 +19,14 @@ lint:
 
 provisioner:
   name: ansible
+  become: True
+  options:
+    v: True
+    become: True
+  config_options:
+    defaults:
+      retry_files_enabled: false
+      stdout_callback: yaml
   playbooks:
     prepare: ../resources/playbooks/playbook.yml
     converge: ../resources/playbooks/playbook.yml
@@ -28,3 +36,5 @@ provisioner:
 verifier:
   name: testinfra
   directory: ../resources/tests/
+  lint:
+    name: flake8
