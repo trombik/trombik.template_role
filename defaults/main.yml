@@ -3,4 +3,7 @@
 template_role_package: "{{ __template_role_package }}"
 template_role_service: "{{ __template_role_service }}"
 template_role_extra_packages: []
+template_role_config_dir: "{{ __template_role_config_dir }}"
+template_role_config_file: "{{ template_role_config_dir }}/template_role.conf"
+template_role_config: ""
 template_role_flags: ""

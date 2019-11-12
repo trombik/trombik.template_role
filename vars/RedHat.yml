@@ -1,3 +1,4 @@
 ---
 __template_role_service: rsyslog
 __template_role_package: tree
+__template_role_config_dir: /etc/template_role

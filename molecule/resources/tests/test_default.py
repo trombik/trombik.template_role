@@ -31,6 +31,13 @@ def service_name(host):
         raise NameError('Unknown distribution')
 
 
+def config_file(host):
+    if host.system_info.distribution == 'freebsd':
+        return '/usr/local/etc/template_role/template_role.conf'
+    else:
+        return '/etc/template_role/template_role.conf'
+
+
 def flags_file(host):
     if host.system_info.distribution == 'freebsd':
         return '/etc/rc.conf.d/syslogd'
@@ -55,6 +62,16 @@ def test_hosts_file(host):
     assert f.user == default_user(host)
     assert f.group == default_group(host)
     assert f.mode == 0o644
+
+
+def test_config_file(host):
+    f = host.file(config_file(host))
+    assert f.is_file
+    assert f.exists
+    assert f.user == default_user(host)
+    assert f.group == default_group(host)
+    assert f.mode == 0o644
+    assert f.contains('Managed by ansible')
 
 
 def test_package_is_installed(host):

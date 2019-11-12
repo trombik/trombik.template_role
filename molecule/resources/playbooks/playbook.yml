@@ -10,3 +10,4 @@
       Debian: ""
       RedHat: ""
     template_role_flags: "{{ os_template_role_flags[ansible_os_family] }}"
+    template_role_config: ""
