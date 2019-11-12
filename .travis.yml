@@ -6,6 +6,9 @@ services:
 env:
   global:
     - ROLE_NAME=template_role
+  matrix:
+    - MOLECULE_DISTRO: ubuntu1804
+    - MOLECULE_DISTRO: centos7
 
 before_install:
 cache: pip
@@ -18,4 +21,5 @@ before_script:
 script:
   - ansible --version
   - molecule --version
-  - molecule test -s travisci
+  - echo "${MOLECULE_DISTRO}"
+  - molecule test -s "travisci_${MOLECULE_DISTRO}"
