@@ -18,7 +18,16 @@ def default_user(host):
 
 
 def service_name(host):
-    return 'sshd'
+    if host.system_info.distribution == 'freebsd':
+        return 'syslogd'
+    elif host.system_info.distribution == 'openbsd':
+        return 'syslogd'
+    elif host.system_info.distribution == 'ubuntu':
+        return 'rsyslog'
+    elif host.system_info.distribution == 'centos':
+        return 'rsyslog'
+    else:
+        raise NameError('Unknown distribution')
 
 
 def flags_file(host):
@@ -61,8 +70,12 @@ def test_rcctl(host):
 
 def test_service(host):
     service = host.service(service_name(host))
-    assert service.is_running
     assert service.is_enabled
+    if host.system_info.distribution == 'freebsd':
+        with host.sudo():
+            assert service.is_running
+    else:
+        assert service.is_running
 
 
 def port_number(host):
