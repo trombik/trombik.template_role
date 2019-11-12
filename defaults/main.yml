@@ -1,4 +1,6 @@
 ---
 
 template_role_package: "{{ __template_role_package }}"
+template_role_service: "{{ __template_role_service }}"
 template_role_extra_packages: []
+template_role_flags: ""

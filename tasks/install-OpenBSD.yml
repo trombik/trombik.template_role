@@ -9,3 +9,9 @@
   openbsd_pkg:
     name: "{{ template_role_package }}"
     state: present
+
+- name: Enable template_role_service
+  service:
+    name: "{{ template_role_service }}"
+    arguments: "{{ template_role_flags }}"
+    enabled: yes

@@ -3,3 +3,10 @@
   hosts: all
   roles:
     - role: trombik.template_role
+  vars:
+    os_template_role_flags:
+      OpenBSD: -h
+      FreeBSD: ""
+      Debian: ""
+      RedHat: ""
+    template_role_flags: "{{ os_template_role_flags[ansible_os_family] }}"

@@ -1,3 +1,3 @@
 ---
-
+__template_role_service: syslogd
 __template_role_package: tree

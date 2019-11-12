@@ -9,3 +9,14 @@
   yum:
     name: "{{ template_role_package }}"
     state: present
+
+- name: Enable template_role_service
+  service:
+    name: "{{ template_role_service }}"
+    enabled: yes
+
+- name: "Create /etc/sysconfig/{{ template_role_service }}"
+  template:
+    src: RedHat.sysconfig.j2
+    dest: "/etc/sysconfig/{{ template_role_service }}"
+    mode: 0644

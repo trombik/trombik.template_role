@@ -5,3 +5,8 @@
 
 - name: "Include install-{{ ansible_os_family }}.yml"
   include: "install-{{ ansible_os_family }}.yml"
+
+- name: Start template_role_service
+  service:
+    name: "{{ template_role_service }}"
+    state: started
