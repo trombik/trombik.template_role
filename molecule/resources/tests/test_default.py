@@ -1,6 +1,5 @@
-import pytest
+# import pytest
 import os
-
 import testinfra.utils.ansible_runner
 
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
@@ -18,50 +17,56 @@ def default_user(host):
     return 'root'
 
 
+def port_number(host):
+    if host.system_info.distribution == 'centos':
+        return 22
+    return 10022
+
+
 def service_name(host):
     if host.system_info.distribution == 'freebsd':
-        return 'syslogd'
+        return 'openssh'
     elif host.system_info.distribution == 'openbsd':
-        return 'syslogd'
+        return 'sshd'
     elif host.system_info.distribution == 'ubuntu':
-        return 'rsyslog'
+        return 'sshd'
     elif host.system_info.distribution == 'centos':
-        return 'rsyslog'
+        return 'sshd'
     else:
         raise NameError('Unknown distribution')
 
 
 def config_file(host):
     if host.system_info.distribution == 'freebsd':
-        return '/usr/local/etc/template_role/template_role.conf'
+        return '/usr/local/etc/ssh/sshd_config'
     else:
-        return '/etc/template_role/template_role.conf'
+        return '/etc/ssh/sshd_config'
 
 
 def flags_file(host):
     if host.system_info.distribution == 'freebsd':
-        return '/etc/rc.conf.d/syslogd'
+        return '/etc/rc.conf.d/openssh'
     elif host.system_info.distribution == 'openbsd':
         return '/etc/rc.conf.local'
     elif host.system_info.distribution == 'ubuntu':
-        return '/etc/default/rsyslog'
+        return '/etc/default/sshd'
     elif host.system_info.distribution == 'centos':
-        return '/etc/sysconfig/rsyslog'
+        return '/etc/sysconfig/sshd'
     else:
         raise NameError('Unknown distribution')
 
 
 def package_name(host):
-    return 'tree'
-
-
-def test_hosts_file(host):
-    f = host.file(flags_file(host))
-    assert f.is_file
-    assert f.exists
-    assert f.user == default_user(host)
-    assert f.group == default_group(host)
-    assert f.mode == 0o644
+    if host.system_info.distribution == 'freebsd':
+        return 'security/openssh-portable'
+    elif host.system_info.distribution == 'openbsd':
+        return None
+    elif host.system_info.distribution == 'ubuntu':
+        return 'openssh-server'
+    elif host.system_info.distribution == 'centos':
+        return 'openssh-server'
+    else:
+        raise NameError('Unknown distribution')
 
 
 def test_config_file(host):
@@ -70,11 +75,20 @@ def test_config_file(host):
     assert f.exists
     assert f.user == default_user(host)
     assert f.group == default_group(host)
-    assert f.mode == 0o644
-    assert f.contains('Managed by ansible')
+    if host.system_info.distribution == 'centos':
+        assert f.mode == 0o600
+    else:
+        assert f.mode == 0o644
+    if host.system_info.distribution == 'centos':
+        with host.sudo():
+            assert f.contains('Managed by ansible')
+    else:
+        assert f.contains('UseDNS no')
 
 
 def test_package_is_installed(host):
+    if package_name(host) is None:
+        return
     package = host.package(package_name(host))
     assert package.is_installed
 
@@ -82,25 +96,18 @@ def test_package_is_installed(host):
 def test_rcctl(host):
     if host.system_info.distribution != 'openbsd':
         return
-    result = host.run('rcctl get syslogd flags')
-    assert '-h' in result.stdout
+    result = host.run('rcctl get sshd flags')
+    assert '-4' in result.stdout
 
 
 def test_service(host):
     service = host.service(service_name(host))
     assert service.is_enabled
-    if host.system_info.distribution == 'freebsd':
-        with host.sudo():
-            assert service.is_running
-    else:
-        assert service.is_running
+    assert service.is_running
 
 
-def port_number(host):
-    return 22
-
-
-@pytest.mark.skip(reason="fails in docker")
 def test_port(host):
     port = port_number(host)
-    assert host.socket(f"tcp://{port}").is_listening
+    # XXX does not work on OpenBSD 6.3
+    if host.system_info.distribution != 'openbsd':
+        assert host.socket(f"tcp://{port}").is_listening

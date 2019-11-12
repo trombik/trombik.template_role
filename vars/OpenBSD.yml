@@ -1,4 +1,4 @@
 ---
-__template_role_service: syslogd
-__template_role_package: tree
-__template_role_config_dir: /etc/template_role
+__template_role_service: sshd
+__template_role_package:
+__template_role_config_dir: /etc/ssh

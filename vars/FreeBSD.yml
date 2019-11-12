@@ -1,4 +1,4 @@
 ---
-__template_role_service: syslogd
-__template_role_package: tree
-__template_role_config_dir: /usr/local/etc/template_role
+__template_role_service: openssh
+__template_role_package: security/openssh-portable
+__template_role_config_dir: /usr/local/etc/ssh

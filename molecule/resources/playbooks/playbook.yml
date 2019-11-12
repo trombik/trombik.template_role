@@ -5,9 +5,21 @@
     - role: trombik.template_role
   vars:
     os_template_role_flags:
-      OpenBSD: -h
+      OpenBSD: -4
       FreeBSD: ""
       Debian: ""
       RedHat: ""
+    os_port:
+      OpenBSD: 10022
+      FreeBSD: 10022
+      Debian: 10022
+      RedHat: 22
     template_role_flags: "{{ os_template_role_flags[ansible_os_family] }}"
-    template_role_config: ""
+    # on RedHat, non-default port is not allowed to listen on
+    # on FreeBSD, sshd from the base and one from the package are both running
+    template_role_config: |
+      UseDNS no
+      Port {{ os_port[ansible_os_family] }}
+      {% if ansible_os_family != 'FreeBSD' and ansible_os_family != 'RedHat' %}
+      Port 22
+      {% endif %}

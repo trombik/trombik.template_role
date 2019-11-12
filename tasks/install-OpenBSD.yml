@@ -5,10 +5,10 @@
     name: "{{ template_role_extra_packages }}"
     state: present
 
-- name: Install template_role_package
-  openbsd_pkg:
-    name: "{{ template_role_package }}"
-    state: present
+# - name: Install template_role_package
+#   openbsd_pkg:
+#     name: "{{ template_role_package }}"
+#     state: present
 
 - name: Enable template_role_service
   service:
