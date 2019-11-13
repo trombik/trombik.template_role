@@ -22,4 +22,3 @@
   service:
     name: "{{ template_role_service }}"
     state: started
-    use: "{% if ansible_os_family == 'RedHat' and ansible_distribution_version is version('7.7', '>=') %}systemd{% else %}default(omit){% endif %}"
