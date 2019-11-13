@@ -17,6 +17,32 @@ def default_user(host):
     return 'root'
 
 
+def user_name(host):
+    if host.system_info.distribution == 'freebsd':
+        return 'sshd'
+    elif host.system_info.distribution == 'openbsd':
+        return 'sshd'
+    elif host.system_info.distribution == 'ubuntu':
+        return 'sshd'
+    elif host.system_info.distribution == 'centos':
+        return 'sshd'
+    else:
+        raise NameError('Unknown distribution')
+
+
+def group_name(host):
+    if host.system_info.distribution == 'freebsd':
+        return 'sshd'
+    elif host.system_info.distribution == 'openbsd':
+        return 'sshd'
+    elif host.system_info.distribution == 'ubuntu':
+        return 'nogroup'
+    elif host.system_info.distribution == 'centos':
+        return 'sshd'
+    else:
+        raise NameError('Unknown distribution')
+
+
 def port_number(host):
     if host.system_info.distribution == 'centos':
         return 22
@@ -41,6 +67,10 @@ def config_file(host):
         return '/usr/local/etc/ssh/sshd_config'
     else:
         return '/etc/ssh/sshd_config'
+
+
+def log_dir(host):
+    return '/var/log/template_role'
 
 
 def flags_file(host):
@@ -98,6 +128,24 @@ def test_rcctl(host):
         return
     result = host.run('rcctl get sshd flags')
     assert '-4' in result.stdout
+
+
+def test_group(host):
+    assert host.group(group_name(host)).exists
+
+
+def test_user(host):
+    assert host.user(user_name(host)).name
+    assert host.user(user_name(host)).group == group_name(host)
+
+
+def test_log_dir(host):
+    d = host.file(log_dir(host))
+    assert d.is_directory
+    assert d.user == user_name(host)
+    assert d.group == group_name(host)
+    assert d.group == group_name(host)
+    assert d.mode == 0o755
 
 
 def test_service(host):
