@@ -1,48 +1,70 @@
-Role Name
-=========
+## `trombik.template_role`
 
-A brief description of the role goes here.
+`ansible` role for `template_role`.
 
-Requirements
-------------
+## Requirements
 
-Any pre-requisites that may not be covered by Ansible itself or the role should
-be mentioned here. For instance, if the role uses the EC2 module, it may be a
-good idea to mention in this section that the boto package is required.
+## Role Variables
 
-Role Variables
---------------
+## Dependencies
 
-A description of the settable variables for this role should go here, including
-any variables that are in defaults/main.yml, vars/main.yml, and any variables
-that can/should be set via parameters to the role. Any variables that are read
-from other roles and/or the global scope (ie. hostvars, group vars, etc.) should
-be mentioned here as well.
+## Example Playbook
 
-Dependencies
-------------
+```
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: trombik.template_role
+  pre_tasks:
+    - name: Dump all hostvars
+      debug:
+        var: hostvars[inventory_hostname]
+    - name: List all services (systemd)
+      # workaround ansible-lint: [303] service used in place of service module
+      shell: "echo; systemctl list-units --type service"
+      changed_when: false
+      when:
+        # in docker, init is not systemd
+        - ansible_virtualization_type != 'docker'
+        - ansible_os_family == 'RedHat' or ansible_os_family == 'Debian'
+    - name: list all services (FreeBSD service)
+      # workaround ansible-lint: [303] service used in place of service module
+      shell: "echo; service -l"
+      changed_when: false
+      when:
+        - ansible_os_family == 'FreeBSD'
+    - name: list all services (rcctl)
+      command: "rcctl ls all"
+      changed_when: false
+      when:
+        - ansible_os_family == 'OpenBSD'
 
-A list of other roles hosted on Galaxy should go here, plus any details in
-regards to parameters that may need to be set for other roles, or variables that
-are used from other roles.
 
-Example Playbook
-----------------
+  vars:
+    os_template_role_flags:
+      OpenBSD: -4
+      FreeBSD: ""
+      Debian: ""
+      RedHat: ""
+    os_port:
+      OpenBSD: 10022
+      FreeBSD: 10022
+      Debian: 10022
+      RedHat: 22
+    template_role_flags: "{{ os_template_role_flags[ansible_os_family] }}"
+    template_role_extra_groups:
+      - bin
+    # on RedHat, non-default port is not allowed to listen on
+    # on FreeBSD, sshd from the base and one from the package are both running
+    template_role_config: |
+      UseDNS no
+      Port {{ os_port[ansible_os_family] }}
+      {% if ansible_os_family != 'FreeBSD' and ansible_os_family != 'RedHat' %}
+      Port 22
+      {% endif %}
+```
 
-Including an example of how to use your role (for instance, with variables
-passed in as parameters) is always nice for users too:
+## License
 
-    - hosts: servers
-      roles:
-         - { role: bar, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a
-website (HTML is not allowed).
+## Author Information
