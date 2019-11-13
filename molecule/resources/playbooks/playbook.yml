@@ -5,6 +5,22 @@
     - role: trombik.template_role
   pre_tasks:
     - debug: var=hostvars[inventory_hostname]
+    - name: List all services (systemd)
+      # workaround ansible-lint: [303] service used in place of service module
+      shell: "echo; systemctl list-units --type service"
+      when:
+        - ansible_os_family == 'RedHat' or ansible_os_family == 'Debian'
+    - name: list all services (FreeBSD service)
+      # workaround ansible-lint: [303] service used in place of service module
+      shell: "echo; service -l"
+      when:
+        - ansible_os_family == 'FreeBSD'
+    - name: list all services (rcctl)
+      command: "rcctl ls all"
+      when:
+        - ansible_os_family == 'OpenBSD'
+
+
   vars:
     os_template_role_flags:
       OpenBSD: -4
