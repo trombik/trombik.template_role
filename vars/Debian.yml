@@ -1,4 +1,4 @@
 ---
-__template_role_service: sshd
+__template_role_service: ssh
 __template_role_package: openssh-server
 __template_role_config_dir: /etc/ssh
