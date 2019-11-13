@@ -138,3 +138,5 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ```
 
 ## Author Information
+
+Tomoyuki Sakurai <y@trombik.org>
