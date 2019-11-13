@@ -43,6 +43,10 @@ def group_name(host):
         raise NameError('Unknown distribution')
 
 
+def extra_group_name(host):
+    return 'bin'
+
+
 def port_number(host):
     if host.system_info.distribution == 'centos':
         return 22
@@ -135,8 +139,10 @@ def test_group(host):
 
 
 def test_user(host):
-    assert host.user(user_name(host)).name
-    assert host.user(user_name(host)).group == group_name(host)
+    u = host.user(user_name(host))
+    assert u.name
+    assert u.group == group_name(host)
+    assert extra_group_name(host) in u.groups
 
 
 def test_log_dir(host):

@@ -40,6 +40,8 @@
       Debian: 10022
       RedHat: 22
     template_role_flags: "{{ os_template_role_flags[ansible_os_family] }}"
+    template_role_extra_groups:
+      - bin
     # on RedHat, non-default port is not allowed to listen on
     # on FreeBSD, sshd from the base and one from the package are both running
     template_role_config: |

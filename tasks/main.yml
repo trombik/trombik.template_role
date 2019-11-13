@@ -18,6 +18,13 @@
   notify:
     - Restart template_role_service
 
+- name: "Add template_role_user to template_role_extra_groups"
+  user:
+    name: "{{ template_role_user }}"
+    append: yes
+    create_home: no
+    groups: "{{ template_role_extra_groups }}"
+
 - name: Create template_role_log_dir
   file:
     path: "{{ template_role_log_dir }}"
