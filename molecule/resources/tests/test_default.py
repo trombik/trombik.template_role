@@ -29,7 +29,7 @@ def service_name(host):
     elif host.system_info.distribution == 'openbsd':
         return 'sshd'
     elif host.system_info.distribution == 'ubuntu':
-        return 'sshd'
+        return 'ssh'
     elif host.system_info.distribution == 'centos':
         return 'sshd'
     else:
