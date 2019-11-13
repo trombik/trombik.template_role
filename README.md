@@ -6,6 +6,60 @@
 
 ## Role Variables
 
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `template_role_package` | | `{{ __template_role_package }}` |
+| `template_role_service` | | `{{ __template_role_service }}` |
+| `template_role_extra_packages` | | `[]` |
+| `template_role_user` | | `{{ __template_role_user }}` |
+| `template_role_group` | | `{{ __template_role_group }}` |
+| `template_role_extra_groups` | | `[]` |
+| `template_role_log_dir` | | `/var/log/template_role` |
+| `template_role_config_dir` | | `{{ __template_role_config_dir }}` |
+| `template_role_config_file` | | `{{ template_role_config_dir }}/sshd_config` |
+| `template_role_config` | | `""` |
+| `template_role_flags` | | `""` |
+
+## Debian
+
+| Variable | Default |
+|----------|---------|
+| `__template_role_service` | `ssh` |
+| `__template_role_package` | `openssh-server` |
+| `__template_role_config_dir` | `/etc/ssh` |
+| `__template_role_user` | `sshd` |
+| `__template_role_group` | `nogroup` |
+
+## FreeBSD
+
+| Variable | Default |
+|----------|---------|
+| `__template_role_service` | `openssh` |
+| `__template_role_package` | `security/openssh-portable` |
+| `__template_role_config_dir` | `/usr/local/etc/ssh` |
+| `__template_role_user` | `sshd` |
+| `__template_role_group` | `sshd` |
+
+## OpenBSD
+
+| Variable | Default |
+|----------|---------|
+| `__template_role_service` | `sshd` |
+| `__template_role_package` | `""` |
+| `__template_role_config_dir` | `/etc/ssh` |
+| `__template_role_user` | `sshd` |
+| `__template_role_group` | `sshd` |
+
+## RedHat
+
+| Variable | Default |
+|----------|---------|
+| `__template_role_service` | `sshd` |
+| `__template_role_package` | `openssh-server` |
+| `__template_role_config_dir` | `/etc/ssh` |
+| `__template_role_user` | `sshd` |
+| `__template_role_group` | `sshd` |
+
 ## Dependencies
 
 ## Example Playbook
