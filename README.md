@@ -10,7 +10,7 @@
 
 ## Example Playbook
 
-```
+```yaml
 ---
 - name: Converge
   hosts: all
