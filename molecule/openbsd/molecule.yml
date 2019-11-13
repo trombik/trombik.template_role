@@ -11,8 +11,8 @@ lint:
   name: yamllint
 
 platforms:
-  - name: openbsd-6.3
-    box: trombik/ansible-openbsd-6.3-amd64
+  - name: openbsd-6.5
+    box: trombik/ansible-openbsd-6.5-amd64
     memory: 512
     cpus: 1
 

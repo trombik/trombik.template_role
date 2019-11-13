@@ -11,6 +11,11 @@ lint:
   name: yamllint
 
 platforms:
+  - name: freebsd-11.3
+    box: trombik/ansible-freebsd-11.3-amd64
+    memory: 512
+    cpus: 1
+    guest: freebsd
   - name: freebsd-12.0
     box: trombik/ansible-freebsd-12.0-amd64
     memory: 512
