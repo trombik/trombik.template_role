@@ -3,6 +3,8 @@
   hosts: all
   roles:
     - role: trombik.template_role
+  pre_tasks:
+    - debug: var=hostvars[inventory_hostname]
   vars:
     os_template_role_flags:
       OpenBSD: -4
