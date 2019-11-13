@@ -8,7 +8,6 @@ env:
     - ROLE_NAME=template_role
   matrix:
     - MOLECULE_DISTRO: ubuntu1804
-    - MOLECULE_DISTRO: centos7
 
 before_install:
 cache: pip
