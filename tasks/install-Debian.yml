@@ -14,8 +14,6 @@
   service:
     name: "{{ template_role_service }}"
     enabled: yes
-    daemon_reload: yes
-    use: systemd
 
 - name: "Create /etc/default/{{ template_role_service }}"
   template:
