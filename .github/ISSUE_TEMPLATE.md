@@ -1,7 +1,6 @@
 <!---
 if you do not know how to fill, you may leave some of questions below empty. We
-will ask further questions. see the procedure at:
-https://github.com/reallyenglish/ansible-role-example/tree/master/docs/Procedures/Creating_Issue
+will ask further questions.
 -->
 
 ##### ISSUE TYPE
