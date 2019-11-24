@@ -19,7 +19,6 @@ provisioner:
   additional_copy_path:
     - extra_modules
     - filter_plugins
-    - extra_roles
 
 platforms:
   - name: freebsd-12.0-amd64
