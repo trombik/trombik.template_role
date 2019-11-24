@@ -61,13 +61,3 @@ suites:
     verifier:
       name: shell
       command: rspec -c -f d -I tests/serverspec tests/serverspec/default_spec.rb
-
-  - name: without_ca_key
-    provisioner:
-      name: ansible_playbook
-      playbook: tests/serverspec/without_ca_key.yml
-    verifier:
-      name: shell
-      command: rspec -c -f d -I tests/serverspec tests/serverspec/without_ca_key_spec.rb
-    includes:
-      - freebsd-12.0-amd64
