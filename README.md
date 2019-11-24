@@ -12,17 +12,17 @@ details.
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `template_role_package` | | `{{ __template_role_package }}` |
-| `template_role_service` | | `{{ __template_role_service }}` |
-| `template_role_extra_packages` | | `[]` |
-| `template_role_user` | | `{{ __template_role_user }}` |
-| `template_role_group` | | `{{ __template_role_group }}` |
-| `template_role_extra_groups` | | `[]` |
-| `template_role_log_dir` | | `/var/log/template_role` |
-| `template_role_config_dir` | | `{{ __template_role_config_dir }}` |
-| `template_role_config_file` | | `{{ template_role_config_dir }}/sshd_config` |
-| `template_role_config` | | `""` |
-| `template_role_flags` | | `""` |
+| `template_role_package` | Package name of `template_role` | `{{ __template_role_package }}` |
+| `template_role_service` | Service name of `template_role` | `{{ __template_role_service }}` |
+| `template_role_extra_packages` | A list of extra package to install | `[]` |
+| `template_role_user` | User name of `template_role` | `{{ __template_role_user }}` |
+| `template_role_group` | Group name of `template_role` | `{{ __template_role_group }}` |
+| `template_role_extra_groups` | A list of extra groups for `template_role_user` | `[]` |
+| `template_role_log_dir` | Path to log directory | `/var/log/template_role` |
+| `template_role_config_dir` | Path to the configuration directory | `{{ __template_role_config_dir }}` |
+| `template_role_config_file` | Path to `template_role.conf` | `{{ template_role_config_dir }}/sshd_config` |
+| `template_role_config` | The content of `template_role.conf` | `""` |
+| `template_role_flags` | See below | `""` |
 
 ## `template_role_flags`
 
