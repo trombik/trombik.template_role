@@ -78,14 +78,14 @@ passed to `rcctl set template_role`.
 
 ```yaml
 ---
-- name: Converge
-  hosts: all
+- hosts: localhost
   roles:
-    - role: trombik.template_role
+    - trombik.template_role
   pre_tasks:
     - name: Dump all hostvars
       debug:
         var: hostvars[inventory_hostname]
+  post_tasks:
     - name: List all services (systemd)
       # workaround ansible-lint: [303] service used in place of service module
       shell: "echo; systemctl list-units --type service"
@@ -100,35 +100,28 @@ passed to `rcctl set template_role`.
       changed_when: false
       when:
         - ansible_os_family == 'FreeBSD'
-    - name: list all services (rcctl)
-      command: "rcctl ls all"
-      changed_when: false
-      when:
-        - ansible_os_family == 'OpenBSD'
-
-
   vars:
     os_template_role_flags:
       OpenBSD: -4
       FreeBSD: ""
       Debian: ""
       RedHat: ""
-    os_port:
-      OpenBSD: 10022
-      FreeBSD: 10022
-      Debian: 10022
-      RedHat: 22
+
+    # on RedHat, non-default port is not allowed to listen on
+    # on FreeBSD, sshd from the base and one from the package are both running
+    os_ports:
+      OpenBSD: [22, 10022]
+      FreeBSD: [10022]
+      Debian: [22, 10022]
+      RedHat: [22]
     template_role_flags: "{{ os_template_role_flags[ansible_os_family] }}"
     template_role_extra_groups:
       - bin
-    # on RedHat, non-default port is not allowed to listen on
-    # on FreeBSD, sshd from the base and one from the package are both running
     template_role_config: |
       UseDNS no
-      Port {{ os_port[ansible_os_family] }}
-      {% if ansible_os_family != 'FreeBSD' and ansible_os_family != 'RedHat' %}
-      Port 22
-      {% endif %}
+      {% for p in os_ports[ansible_os_family] %}
+      Port {{ p }}
+      {% endfor %}
 ```
 
 # License
