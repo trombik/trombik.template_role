@@ -37,9 +37,10 @@
       FreeBSD: ""
       Debian: ""
       RedHat: ""
+
     # on RedHat, non-default port is not allowed to listen on
     # on FreeBSD, sshd from the base and one from the package are both running
-    os_port:
+    os_ports:
       OpenBSD: [22, 10022]
       FreeBSD: [10022]
       Debian: [22, 10022]
@@ -49,6 +50,6 @@
       - bin
     template_role_config: |
       UseDNS no
-      {% for p in os_port[ansible_os_family] %}
+      {% for p in os_ports[ansible_os_family] %}
       Port {{ p }}
       {% endfor %}
