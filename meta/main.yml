@@ -1,6 +1,7 @@
 ---
 galaxy_info:
   author: Tomoyuki Sakurai
+  role_name: template_role
   description: An example template role
   company: N/A
   license: MIT
