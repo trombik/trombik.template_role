@@ -48,7 +48,17 @@ TBW
 
 ## Limitations
 
+### No unit tests in Travis CI
+
 Unit tests are not tested in `travis CI`.
+
+### HTTP proxy is not supported in integration tests
+
+HTTP proxy is supported in unit tests. Set `ANSIBLE_PROXY`.
+`.kitchen.local.yml` implements automatic HTTP proxy detection: if it finds
+port 8080 on local machine is listening, it sets the `ANSIBLE_PROXY`. However,
+HTTP proxy is not supported in integration tests. `molecule` recommends
+`vagrant-proxyconf`, but it does not support FreeBSD or OpenBSD.
 
 ## LICENSE
 
