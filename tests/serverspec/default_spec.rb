@@ -17,12 +17,12 @@ extra_packages = []
 case os[:family]
 when "openbsd"
   package = nil
-  ports = [10_022]
+  ports = [22, 10_022]
 when "freebsd"
   config_dir = "/usr/local/etc/ssh"
   ports = [22, 10_022]
 when "ubuntu"
-  ports = [10_022]
+  ports = [22, 10_022]
   log_file = "/var/log/syslog"
 when "centos"
   ports = [22]
