@@ -28,6 +28,8 @@ Files, services, and other resources are tested in unit tests. Unit tests are
 expected not to change the state of VMs, i.e. repeated tests produce same
 results.
 
+Unit tests are located under [`tests/serverspec`](tests/serverspec).
+
 An integration test is defined as "a test that expects certain results after
 conversion and, optionally, side effects. Unlike unit tests, expected
 outcomes are tested in integration tests. Examples are: fail-over in a
@@ -37,6 +39,8 @@ In this role template, `test-kitchen`, `kitchen-vagrant`, and `serverspec` are
 used for unit tests.
 
 `molecule`, `vagrant`, and `testinfra` are used for integration tests.
+
+Integration tests are located under [`tests/molecule`](tests/molecule).
 
 ## Requirements
 
