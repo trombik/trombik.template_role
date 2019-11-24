@@ -46,6 +46,10 @@ Integration tests are located under [`tests/molecule`](tests/molecule).
 
 TBW
 
+## Limitations
+
+Unit tests are not tested in `travis CI`.
+
 ## LICENSE
 
 ```
