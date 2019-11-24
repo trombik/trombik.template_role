@@ -2,6 +2,10 @@
 
 `ansible` role for `template_role`.
 
+This is a template role to develop new `ansible` role. Not to be used as
+`ansible` role. Please see [README.about.md](README.about.md) for more
+details.
+
 # Requirements
 
 # Role Variables
