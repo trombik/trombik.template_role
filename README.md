@@ -1,10 +1,10 @@
-## `trombik.template_role`
+# `trombik.template_role`
 
 `ansible` role for `template_role`.
 
-## Requirements
+# Requirements
 
-## Role Variables
+# Role Variables
 
 | Variable | Description | Default |
 |----------|-------------|---------|
@@ -60,9 +60,9 @@
 | `__template_role_user` | `sshd` |
 | `__template_role_group` | `sshd` |
 
-## Dependencies
+# Dependencies
 
-## Example Playbook
+# Example Playbook
 
 ```yaml
 ---
@@ -119,7 +119,7 @@
       {% endif %}
 ```
 
-## License
+# License
 
 ```
 Copyright (c) 2016 Tomoyuki Sakurai <y@trombik.org>
@@ -137,6 +137,6 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ```
 
-## Author Information
+# Author Information
 
 Tomoyuki Sakurai <y@trombik.org>

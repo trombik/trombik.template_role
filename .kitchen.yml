@@ -1,0 +1,74 @@
+---
+driver:
+  name: vagrant
+
+transport:
+  name: rsync
+
+provisioner:
+  hosts: test-kitchen
+  name: ansible_playbook
+  require_chef_for_busser: false
+  require_ruby_for_busser: false
+  ansible_verbosity: 1
+  ansible_verbose: true
+  ansible_extra_flags: <%= ENV['ANSIBLE_EXTRA_FLAGS'] %>
+  requirements_path: requirements.yml
+  http_proxy: <%= ENV['ANSIBLE_PROXY'] %>
+  idempotency_test: true
+  additional_copy_path:
+    - extra_modules
+    - filter_plugins
+    - extra_roles
+
+platforms:
+  - name: freebsd-12.0-amd64
+    driver:
+      box: trombik/ansible-freebsd-12.0-amd64
+      box_check_update: false
+    driver_config:
+      ssh:
+        shell: '/bin/sh'
+    provisioner:
+      extra_vars:
+        ansible_python_interpreter: '/usr/local/bin/python'
+
+  - name: openbsd-6.5-amd64
+    driver:
+      box: trombik/ansible-openbsd-6.5-amd64
+      box_check_update: false
+    driver_config:
+      ssh:
+        shell: '/bin/sh'
+    provisioner:
+      extra_vars:
+        ansible_python_interpreter: '/usr/local/bin/python3'
+
+  - name: ubuntu-18.04-amd64
+    driver:
+      box: trombik/ansible-ubuntu-18.04-amd64
+      box_check_update: false
+
+  - name: centos-7.4-x86_64
+    driver:
+      box: trombik/ansible-centos-7.4-x86_64
+      box_check_update: false
+
+suites:
+  - name: default
+    provisioner:
+      name: ansible_playbook
+      playbook: tests/serverspec/default.yml
+    verifier:
+      name: shell
+      command: rspec -c -f d -I tests/serverspec tests/serverspec/default_spec.rb
+
+  - name: without_ca_key
+    provisioner:
+      name: ansible_playbook
+      playbook: tests/serverspec/without_ca_key.yml
+    verifier:
+      name: shell
+      command: rspec -c -f d -I tests/serverspec tests/serverspec/without_ca_key_spec.rb
+    includes:
+      - freebsd-12.0-amd64
