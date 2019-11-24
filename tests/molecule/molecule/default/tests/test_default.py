@@ -61,6 +61,18 @@ def read_digest(host, filename):
     return read_remote_file(client1, filename)
 
 
+def get_listen_ports(host):
+    if host.system_info.distribution == 'freebsd':
+        return [22, 10022]
+    if host.system_info.distribution == 'openbsd':
+        return [22, 10022]
+    elif host.system_info.distribution == 'ubuntu':
+        return [22, 10022]
+    elif host.system_info.distribution == 'centos':
+        return [22]
+    raise NameError('Unknown distribution')
+
+
 def test_hosts_file(host):
     f = host.file('/etc/hosts')
 
@@ -94,6 +106,13 @@ def test_service(host):
     # XXX in docker, host.service() does not work
     if not is_docker(host):
         assert s.is_enabled
+
+
+def test_port(host):
+    ports = get_listen_ports(host)
+
+    for p in ports:
+        assert host.socket("tcp://:::%d" % p).is_listening
 
 
 def test_find_digest1_on_client(host):

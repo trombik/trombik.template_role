@@ -26,8 +26,6 @@
       changed_when: false
       when:
         - ansible_os_family == 'OpenBSD'
-
-
   vars:
     os_template_role_flags:
       OpenBSD: -4
