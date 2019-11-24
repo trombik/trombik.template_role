@@ -102,9 +102,9 @@ def test_icmp_from_server(host):
 def test_service(host):
     s = host.service(get_service_name(host))
 
-    assert s.is_running
     # XXX in docker, host.service() does not work
     if not is_docker(host):
+        assert s.is_running
         assert s.is_enabled
 
 
