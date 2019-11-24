@@ -48,6 +48,11 @@ TBW
 
 ## Limitations
 
+### No integration tests for FreeBSD and OpenBSD in Travis CI
+
+The implementation uses `docker` as virtualisation in Travis CI. As such, it
+does not support FreeBSD and OpenBSD.
+
 ### No unit tests in Travis CI
 
 Unit tests are not tested in `travis CI`.
