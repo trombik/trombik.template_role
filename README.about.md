@@ -46,6 +46,65 @@ Integration tests are located under [`tests/molecule`](tests/molecule).
 
 TBW
 
+## Usage
+
+### Unit tests
+
+#### List all `test-kitchen` suites
+
+```
+> bundle exec kitchen list
+Instance                   Driver   Provisioner      Verifier  Transport  Last Action    Last Error
+default-freebsd-120-amd64  Vagrant  AnsiblePlaybook  Shell     Rsync      <Not Created>  <None>
+default-openbsd-65-amd64   Vagrant  AnsiblePlaybook  Shell     Rsync      <Not Created>  <None>
+default-ubuntu-1804-amd64  Vagrant  AnsiblePlaybook  Shell     Rsync      <Not Created>  <None>
+default-centos-74-x86-64   Vagrant  AnsiblePlaybook  Shell     Rsync      <Not Created>  <None>
+```
+
+#### Run all test suites or a test suite
+
+
+Run all tests:
+
+```
+bundle exec kitchen test
+```
+
+Run `default-freebsd-120-amd64` only
+
+```
+> bundle exec kitchen test default-freebsd-120-amd64
+```
+
+### Integration tests
+
+#### List all available scenarios
+
+```
+> molecule list
+
+Instance Name    Driver Name    Provisioner Name    Scenario Name        Created    Converged
+---------------  -------------  ------------------  -------------------  ---------  -----------
+server1          vagrant        ansible             default              false      false
+client1          vagrant        ansible             default              false      false
+server1          docker         ansible             travisci_centos7     false      false
+client1          docker         ansible             travisci_centos7     false      false
+server1          docker         ansible             travisci_ubuntu1804  false      false
+client1          docker         ansible             travisci_ubuntu1804  false      false
+```
+
+#### Run `default` integration test
+
+```
+> molecule test
+```
+
+If you want to inspect VMs after failure, run with `--destroy never`.
+
+```
+> molecule test --destroy never
+```
+
 ## Limitations
 
 ### No integration tests for FreeBSD and OpenBSD in Travis CI
