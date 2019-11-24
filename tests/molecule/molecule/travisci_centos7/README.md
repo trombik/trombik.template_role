@@ -1,7 +1,7 @@
 ## scenario `travisci_centos7`
 
-
 ### Description
 
-The scenario does the same thing in scenario `default`, but using `centos`
-instances in docker.
+This scenario creates two `docker` instances.
+
+The scenario does the same side-effect play in `default`.
