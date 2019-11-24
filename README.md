@@ -8,8 +8,12 @@ A template for `ansible` role.
   `ruby` files, `serverspec` for unit tests, and `molecule` for integration tests.
 * Supports CI in `travis CI`
 * Supported Virtualisations: `virtualbox` for `serverspec` and `molecule`,
-  `docker` for `molecule`.`
+  `virtualbox` and `docker` for `molecule`.`
 * Supported OS platforms inlcude: FreeBSD, OpenBSD, Ubuntu, and CentOS
+
+## Requirements
+
+TBW
 
 ## LICENSE
 
