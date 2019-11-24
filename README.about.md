@@ -55,10 +55,62 @@ Unit tests are not tested in `travis CI`.
 ### HTTP proxy is not supported in integration tests
 
 HTTP proxy is supported in unit tests. Set `ANSIBLE_PROXY`.
-`.kitchen.local.yml` implements automatic HTTP proxy detection: if it finds
+`.kitchen.local.yml` (see below) implements automatic HTTP proxy detection: if it finds
 port 8080 on local machine is listening, it sets the `ANSIBLE_PROXY`. However,
 HTTP proxy is not supported in integration tests. `molecule` recommends
 `vagrant-proxyconf`, but it does not support FreeBSD or OpenBSD.
+
+## Examples
+
+### An example of `.kitchen.local.yml`
+
+This is an optional file that detects a listening port on local machine, and,
+if the port (8080) is open, use the port as HTTP proxy service.
+
+```ruby
+<%
+require 'socket'
+# @return [String] public IP address of workstation used for egress traffic
+def local_ip
+  @local_ip ||= begin
+    # turn off reverse DNS resolution temporarily
+    orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true
+
+    # open UDP socket so that it never send anything over the network
+    UDPSocket.open do |s|
+      s.connect '8.8.8.8', 1 # any global IP address works here
+      s.addr.last
+    end
+  ensure
+    Socket.do_not_reverse_lookup = orig
+  end
+end
+# @return [Integer] default listening port
+def local_port
+  ENV['KITCHEN_PROXY_PORT'] ? ENV['KITCHEN_PROXY_PORT'] : 8080
+end
+# @return [String] the proxy URL
+def http_proxy_url ; "http://#{local_ip}:#{local_port}" ; end
+# @return [TrueClass,FalseClass] whether or not the port is listening
+def proxy_running?
+  socket = TCPSocket.new(local_ip, local_port)
+  true
+rescue SocketError, Errno::ECONNREFUSED,
+  Errno::EHOSTUNREACH, Errno::ENETUNREACH, IOError
+  false
+rescue Errno::EPERM, Errno::ETIMEDOUT
+  false
+ensure
+  socket && socket.close
+end
+%>
+---
+<% if proxy_running? %>
+provisioner:
+  http_proxy: <%= http_proxy_url %>
+  https_proxy: <%= http_proxy_url %>
+<% end %>
+```
 
 ## LICENSE
 
