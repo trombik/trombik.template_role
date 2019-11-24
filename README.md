@@ -24,6 +24,14 @@ details.
 | `template_role_config` | | `""` |
 | `template_role_flags` | | `""` |
 
+## `template_role_flags`
+
+This variable is used for overriding defaults for startup scripts. In Debian
+variants, the value is the content of `/etc/default/template_role`. In RedHat
+variants, it is the content of `/etc/sysconfig/template_role`. In FreeBSD, it
+is the content of `/etc/rc.conf.d/template_role`. In OpenBSD, the value is
+passed to `rcctl set template_role`.
+
 ## Debian
 
 | Variable | Default |
