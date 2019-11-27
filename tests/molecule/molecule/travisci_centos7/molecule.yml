@@ -15,12 +15,9 @@ platforms:
     image: centos/systemd
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    command: /lib/systemd/systemd
     privileged: true
     pre_build_image: true
-    command: "/usr/sbin/init"
-    tty: True
-    environment:
-      container: docker
     networks:
       - name: shared
         aliases: server1
@@ -30,12 +27,9 @@ platforms:
     image: centos/systemd
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    command: /lib/systemd/systemd
     privileged: true
     pre_build_image: true
-    command: "/usr/sbin/init"
-    tty: True
-    environment:
-      container: docker
     networks:
       - name: shared
         aliases: client1

@@ -15,6 +15,7 @@ platforms:
     image: geerlingguy/docker-ubuntu1804-ansible
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    command: /lib/systemd/systemd
     privileged: true
     pre_build_image: true
     networks:
@@ -26,6 +27,7 @@ platforms:
     image: geerlingguy/docker-ubuntu1804-ansible
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    command: /lib/systemd/systemd
     privileged: true
     pre_build_image: true
     networks:
