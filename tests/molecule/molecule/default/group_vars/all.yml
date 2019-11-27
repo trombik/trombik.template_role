@@ -1,1 +1,8 @@
 ---
+
+os_docker_extra_packages:
+  FreeBSD: []
+  OpenBSD: []
+  Debian: mailutils
+  RedHat: mailx
+docker_extra_packages: "{{ os_docker_extra_packages[ansible_os_family] }}"
