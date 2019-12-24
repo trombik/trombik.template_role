@@ -1,5 +1,7 @@
 # `trombik.template_role`
 
+[![Build Status](https://travis-ci.com/trombik/trombik.template_role.svg?branch=master)](https://travis-ci.com/trombik/trombik.template_role)
+
 `ansible` role for `template_role`.
 
 This is a template role to develop new `ansible` role. Not to be used as
