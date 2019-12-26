@@ -90,7 +90,7 @@ script:
   - yamllint -c .yamllint.yml .
 
   # run the QA test
-  - qansible qa
+  # - qansible qa
 
   # run molecule
   - echo TARGET_SCENARIO=${TARGET_SCENARIO}
@@ -98,6 +98,9 @@ script:
     if [ -d "tests/molecule/molecule/${TARGET_SCENARIO}" ]; then
       cd tests/molecule
       if molecule list; then
+        if [ -f requirements.txt ]; then
+          pip install -r requirements.txt --user
+        fi
         molecule test -s "${TARGET_SCENARIO}"
       fi
     fi
