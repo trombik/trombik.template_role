@@ -1,2 +1,5 @@
 ---
-[]
+- name: trombik.bundler
+- name: trombik.redhat_repo
+- name: trombik.git
+- name: trombik.language_ruby

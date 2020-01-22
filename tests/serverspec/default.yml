@@ -1,7 +1,12 @@
 ---
 - hosts: localhost
   roles:
-    - trombik.template_role
+    - role: trombik.git
+    - role: trombik.language_ruby
+    - role: trombik.bundler
+    - role: trombik.redhat_repo
+      when: ansible_os_family == 'RedHat'
+    - role: ansible-role-jekyll
   pre_tasks:
     - name: Dump all hostvars
       debug:
@@ -22,24 +27,41 @@
       when:
         - ansible_os_family == 'FreeBSD'
   vars:
-    os_template_role_flags:
-      OpenBSD: -4
-      FreeBSD: ""
-      Debian: ""
-      RedHat: ""
+    os_branch:
+      FreeBSD: demo
+      OpenBSD: demo_bundler_1_2
+      Debian: demo_bundler_1_2
+      RedHat: demo_bundler_1_2
 
-    # on RedHat, non-default port is not allowed to listen on
-    # on FreeBSD, sshd from the base and one from the package are both running
-    os_ports:
-      OpenBSD: [22, 10022]
-      FreeBSD: [10022]
-      Debian: [22, 10022]
-      RedHat: [22]
-    template_role_flags: "{{ os_template_role_flags[ansible_os_family] }}"
-    template_role_extra_groups:
-      - bin
-    template_role_config: |
-      UseDNS no
-      {% for p in os_ports[ansible_os_family] %}
-      Port {{ p }}
-      {% endfor %}
+    os_jekyll_extra_packages:
+      FreeBSD: []
+      OpenBSD: []
+      Debian:
+        - ruby-dev
+      RedHat:
+        - gcc-c++
+        - ruby-devel
+    jekyll_extra_packages: "{{ os_jekyll_extra_packages[ansible_os_family] }}"
+
+    jekyll_user: vagrant
+    os_jekyll_bundler_bin:
+      OpenBSD: "bundle{{ language_ruby_version.short }}"
+      Debian: "{{ __jekyll_bundler_bin }}"
+      FreeBSD: "{{ __jekyll_bundler_bin }}"
+      RedHat: "{{ __jekyll_bundler_bin }}"
+    jekyll_bundler_bin: "{{ os_jekyll_bundler_bin[ansible_os_family] }}"
+    jekyll_repositories:
+      - name: demo
+        module: git
+        config:
+          repo: https://github.com/trombik/startbootstrap-coming-soon.git
+          dest: /home/vagrant/demo
+          version: "{{ os_branch[ansible_os_family] }}"
+
+    redhat_repo_extra_packages:
+      - epel-release
+    redhat_repo:
+      epel:
+        mirrorlist: "http://mirrors.fedoraproject.org/mirrorlist?repo=epel-{{ ansible_distribution_major_version }}&arch={{ ansible_architecture }}"
+        gpgcheck: yes
+        enabled: yes

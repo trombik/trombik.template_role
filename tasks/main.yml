@@ -1,39 +1,55 @@
 ---
 
+- name: Assert jekyll_user is not empty
+  assert:
+    that:
+      - jekyll_user | length > 0
+
 - name: "Include vars/{{ ansible_os_family }}.yml"
   include_vars: "{{ ansible_os_family }}.yml"
 
 - name: "Include install-{{ ansible_os_family }}.yml"
   include: "install-{{ ansible_os_family }}.yml"
 
-- name: "Create {{ template_role_config_dir }}"
-  file:
-    path: "{{ template_role_config_dir }}"
-    state: directory
-
-- name: "Create {{ template_role_config_file }}"
-  template:
-    src: template_role.conf.j2
-    dest: "{{ template_role_config_file }}"
+- name: Update jekyll_repositories (git)
+  git:
+    repo: "{{ item.config.repo }}"
+    dest: "{{ item.config.dest }}"
+    accept_hostkey: "{{ item.config.accept_hostkey | default('no') }}"
+    archive: "{{ item.config.archive | default(omit) }}"
+    bare: "{{ item.config.bare | default('no') }}"
+    clone: "{{ item.config.clone | default('yes') }}"
+    depth: "{{ item.config.depth | default(omit) }}"
+    executable: "{{ item.config.executable | default(omit) }}"
+    force: "{{ item.config.force | default('no') }}"
+    key_file: "{{ item.config.key_file | default(omit) }}"
+    recursive: "{{ item.config.recursive | default('yes') }}"
+    reference: "{{ item.config.reference | default(omit) }}"
+    refspec: "{{ item.config.refspec | default(omit) }}"
+    remote: "{{ item.config.remote | default(omit) }}"
+    separate_git_dir: "{{ item.config.separate_git_dir | default(omit) }}"
+    ssh_opts: "{{ item.config.ssh_opts | default(omit) }}"
+    track_submodules: "{{ item.config.track_submodules | default('no') }}"
+    umask: "{{ item.config.umask | default(omit) }}"
+    # update: "{{ item.config['update'] | default('yes') }}"
+    verify_commit: "{{ item.config.verify_commit | default('no') }}"
+    version: "{{ item.config.version | default(omit) }}"
+  with_items: "{{ jekyll_repositories }}"
+  when: item.module == 'git'
+  become: yes
+  become_user: "{{ jekyll_user }}"
+  register: __jekyll_updated
   notify:
-    - Restart template_role_service
+    - Rebuild jekyll_repositories
 
-- name: "Add template_role_user to template_role_extra_groups"
-  user:
-    name: "{{ template_role_user }}"
-    append: yes
-    create_home: no
-    groups: "{{ template_role_extra_groups }}"
+- name: Update gems
+  bundler:
+    chdir: "{{ item.config.dest }}"
 
-- name: Create template_role_log_dir
-  file:
-    path: "{{ template_role_log_dir }}"
-    owner: "{{ template_role_user }}"
-    group: "{{ template_role_group }}"
-    mode: 0755
-    state: directory
-
-- name: Start template_role_service
-  service:
-    name: "{{ template_role_service }}"
-    state: started
+    # XXX should be configurable
+    deployment_mode: no
+    executable: "{{ jekyll_bundler_bin }}"
+    state: present
+  with_items: "{{ jekyll_repositories }}"
+  become: yes
+  become_user: "{{ jekyll_user }}"

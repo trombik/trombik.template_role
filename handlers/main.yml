@@ -1,6 +1,13 @@
 ---
 
-- name: Restart template_role_service
-  service:
-    name: "{{ template_role_service }}"
-    state: restarted
+- name: Rebuild jekyll_repositories
+  command: "{{ jekyll_bundler_bin }} exec jekyll build"
+  args:
+    chdir: "{{ item.config.dest }}"
+  become: yes
+  become_user: "{{ jekyll_user }}"
+  environment:
+    # XXX workaround for `jekyll: command not found`
+    # XXX find out where `~/bin` is set on CentOS
+    PATH: "{{ ansible_env.PATH }}{% if ansible_os_family == 'RedHat' %}:~/bin{% endif %}"
+  with_items: "{{ jekyll_repositories }}"
